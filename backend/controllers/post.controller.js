@@ -102,3 +102,65 @@ export const getUserPost = async (req, res) => {
         });
     }
 }
+
+export const likePost = async (req, res) => {
+    try {
+        const userToLikeId = req.id;
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found!"
+            });
+        }
+
+        // Like Logic
+        await Post.updateOne({ $addToSet: { likes: userToLikeId } });
+        await post.save();
+
+        // Implementing socket.io for real-time notification
+
+        return res.status(200).json({
+            success: true,
+            message: "Post liked!"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to like post!"
+        });
+    }
+}
+
+export const dislikePost = async (req, res) => {
+    try {
+        const userToDislikeId = req.id;
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found!"
+            });
+        }
+
+        // Dislike Logic
+        await Post.updateOne({ $pull: { likes: userToDislikeId } });
+        await post.save();
+
+        // Implementing socket.io for real-time notification!
+
+        return res.status(200).json({
+            success: true,
+            message: "Post disliked!"
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to dislike Post!"
+        });
+    }
+}
