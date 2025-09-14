@@ -203,3 +203,28 @@ export const addComment = async (req, res) => {
         });
     }
 }
+
+export const getCommentsForPost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const comments = await Comment.find({ post: postId })
+            .populate({ path: "author", select: "username, profilePicture" });
+        if (!comments) {
+            return res.status(404).json({
+                success: false,
+                message: "No comments found for this post!"
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "All comments fetched successfully!",
+            comments
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch all comments!"
+        });
+    }
+}
