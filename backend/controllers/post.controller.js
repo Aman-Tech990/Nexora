@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import cloudinary from '../utils/cloudinary.js';
 import { Post } from '../models/post.model.js';
 import { User } from '../models/user.model.js';
+import { Comment } from "../models/comment.model.js";
 
 export const addNewPost = async (req, res) => {
     try {
@@ -161,6 +162,44 @@ export const dislikePost = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Failed to dislike Post!"
+        });
+    }
+}
+
+export const addComment = async (req, res) => {
+    try {
+        const userToCommentId = req.id;
+        const postId = req.params.id;
+        const { text } = req.body;
+        const post = Post.findById(postId);
+        if (!text) {
+            return res.status(404).json({
+                success: false,
+                message: "Text body is required!"
+            });
+        }
+        const comment = await Comment.create({
+            text,
+            author: userToCommentId,
+            post: postId
+        }).populate({
+            path: "author",
+            select: "username, profilePicture"
+        });
+
+        post.comment.push(comment._id);
+        await post.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Comment added successfully!",
+            comment
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to add comments!"
         });
     }
 }
