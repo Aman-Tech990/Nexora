@@ -4,7 +4,7 @@ import { getMessage, sendMessage } from "../controllers/message.controller.js";
 
 const router = express.Router();
 
-router.route("/send/:id").post(isAuthenticated, sendMessage);
-router.route("/all/:id").get(isAuthenticated, getMessage);
+router.route("/sendMessage/:id").post(isAuthenticated, sendMessage);
+router.route("/allMessage/:id").get(isAuthenticated, getMessage);
 
 export default router;
