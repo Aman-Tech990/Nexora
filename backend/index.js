@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./database/db.js";
 import userRoute from "./routes/user.route.js";
+import postRoute from "./routes/post.route.js";
+import messageRoute from "./routes/message.route.js";
 
 // dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -32,6 +34,8 @@ connectDB();
 
 // APIs
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/post", postRoute);
+app.use("/api/v1/message", messageRoute);
 
 // App Entry Point
 app.listen(PORT, () => {
