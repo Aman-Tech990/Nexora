@@ -76,7 +76,7 @@ export const login = async (req, res) => {
             .json({
                 success: true,
                 message: `Welcome back ${user.username}!`,
-                userResponse
+                user: userResponse
             });
     } catch (error) {
         console.log(error);
