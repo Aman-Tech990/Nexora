@@ -68,7 +68,7 @@ export const getMessage = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            message: "Failed to get message!"
+            message: "Failed to get!"
         });
     }
 }
