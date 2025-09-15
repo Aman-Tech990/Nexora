@@ -13,5 +13,5 @@ const conversationSchema = new mongoose.Schema({
     ]
 }, { timestamps: true });
 
-export const Conversation = mongoose.Schema("Conversation", conversationSchema);
+export const Conversation = mongoose.Schema("Conversations", conversationSchema);
 
