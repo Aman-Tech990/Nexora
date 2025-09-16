@@ -71,7 +71,7 @@ export const getAllPost = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success: true,
-            message: "Failed to fetch all posts!"
+            message: "Failed to fetch all !"
         });
     }
 }
