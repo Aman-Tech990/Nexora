@@ -12,7 +12,7 @@ export const addNewPost = async (req, res) => {
         if (!image) {
             return res.status(400).json({
                 success: false,
-                message: "Image is required!"
+                message: "Image is"
             });
         }
         const optimizedImageBuffer = await sharp(image.buffer)
