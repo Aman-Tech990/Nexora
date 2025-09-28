@@ -53,7 +53,7 @@ const CommentDialog = ({ open, setOpen }) => {
                             </div>
                             <hr />
                             <div>
-                                
+
                             </div>
                         </div>
                     </div>
