@@ -48,7 +48,6 @@ const CommentDialog = ({ open, setOpen }) => {
                                         <Button variant="outline" className="cursor-pointer">Embed</Button>
                                         <Button variant="outline" className="cursor-pointer">About this account</Button>
                                         <Button variant="outline" className="text-red-500 cursor-pointer">Delete</Button>
-                                        dahuhaeud
                                     </DialogContent>
                                 </Dialog>
                             </div>
