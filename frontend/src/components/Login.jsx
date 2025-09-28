@@ -7,29 +7,31 @@ import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router';
 import { Loader2 } from 'lucide-react';
 
-const Signup = () => {
+const Login = () => {
     const navigate = useNavigate();
     const [input, setInput] = useState({
-        username: "",
         email: "",
         password: ""
     });
     const [loader, setLoading] = useState(false);
 
-    const signupHandler = async (e) => {
+    const loginHandler = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:5000/api/v1/user/register", input, { headers: { "Content-Type": "application/json" }, withCredentials: true });
+            const res = await axios.post("http://localhost:5000/api/v1/user/login", input,
+                {
+                    headers:
+                        { "Content-Type": "application/json" }, withCredentials: true
+                });
 
             if (res.data.success) {
                 toast.success(res.data.message);
                 setInput({
-                    username: "",
                     email: "",
                     password: ""
                 });
-                navigate("/login");
+                navigate("/");
             } else {
                 toast.error(res.data.message);
             }
@@ -46,24 +48,10 @@ const Signup = () => {
 
     return (
         <div className='flex items-center justify-center min-h-screen w-full'>
-            <form onSubmit={signupHandler} className='shadow-xl flex flex-col gap-5 p-8 bg-blue-50 rounded-3xl max-w-sm sm:max-w-md'>
+            <form onSubmit={loginHandler} className='shadow-xl flex flex-col gap-5 p-8 bg-blue-50 rounded-3xl max-w-sm sm:max-w-md'>
                 <div className='mb-4'>
                     <h1 className='text-center text-lg md:text-xl font-bold mb-1'>NEXORA</h1>
                     <p className='font-semibold text-center text-xs sm:text-sm text-gray-600'>Sign up to see photos and videos from your friends</p>
-                </div>
-                <div>
-                    <Label htmlFor="username" className="mb-3 mx-1 font-semibold">Username</Label>
-                    <Input
-                        id="username"
-                        type="text"
-                        name="username"
-                        value={input.username}
-                        onChange={(e) =>
-                            setInput({ ...input, [e.target.name]: e.target.value })
-                        }
-                        placeholder="eg. Krishna"
-                        className="focus-visible:ring-transparent"
-                    />
                 </div>
                 <div>
                     <Label htmlFor="email" className="mb-3 mx-1 font-semibold">Email</Label>
@@ -105,20 +93,20 @@ const Signup = () => {
                             type="submit"
                             className="bg-blue-900 text-white hover:cursor-pointer"
                         >
-                            Signup
+                            Login
                         </Button>
                     )
                 }
 
                 <p className='text-center'>
-                    Already have an account?
-                    <Link to="/login">
-                        <span className="text-blue-600 hover:cursor-pointer hover:underline hover:text-blue-900"> Login </span>
+                    New User?
+                    <Link to="/signup">
+                        <span className="text-blue-600 hover:cursor-pointer hover:underline hover:text-blue-900"> Signup </span>
                     </Link>
                 </p>
             </form>
-        </div >
+        </div>
     )
 }
 
-export default Signup;
+export default Login;
