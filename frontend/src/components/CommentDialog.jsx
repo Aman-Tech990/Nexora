@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Link } from 'react-router';
@@ -6,6 +6,17 @@ import { MoreHorizontal } from 'lucide-react';
 import { Button } from './ui/button';
 
 const CommentDialog = ({ open, setOpen }) => {
+
+    const [text, setText] = useState("");
+
+    const changeEventHandler = (e) => {
+        if (e.target.value.trim()) {
+            setText(e.target.value);
+        } else {
+            setText("");
+        }
+    }
+
     return (
         <div>
             <Dialog open={open}>
@@ -36,7 +47,7 @@ const CommentDialog = ({ open, setOpen }) => {
                                 </div>
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <MoreHorizontal />
+                                        <MoreHorizontal className="cursor-pointer" />
                                     </DialogTrigger>
                                     <DialogContent className="flex flex-col">
                                         <Button variant="outline" className="text-red-500 cursor-pointer">Report</Button>
@@ -52,8 +63,25 @@ const CommentDialog = ({ open, setOpen }) => {
                                 </Dialog>
                             </div>
                             <hr />
-                            <div>
-
+                            <div className='flex-1 items-center overflow-y-auto max-h-96 p-4'>
+                                All Comments to be shown
+                            </div>
+                            <div className="p-4 flex items-center gap-2">
+                                <input
+                                    type="text"
+                                    name="text"
+                                    value={text}
+                                    onChange={changeEventHandler}
+                                    placeholder="Add a comment.."
+                                    className="outline-none w-full border border-gray-300 p-2 rounded-md"
+                                />
+                                <Button
+                                    variant="outline"
+                                    disabled={!text.trim()}
+                                    className="cursor-pointer"
+                                >
+                                    Send
+                                </Button>
                             </div>
                         </div>
                     </div>
