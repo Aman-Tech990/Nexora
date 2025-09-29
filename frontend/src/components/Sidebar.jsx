@@ -5,31 +5,18 @@ import { AvatarFallback } from '@radix-ui/react-avatar';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-
-const sidebarItems = [
-    { icon: <Home />, text: "Home" },
-    { icon: <Search />, text: "Search" },
-    { icon: <TrendingUp />, text: "Explore" },
-    { icon: <MessageCircle />, text: "Messages" },
-    { icon: <Heart />, text: "Notifications" },
-    { icon: <PlusSquare />, text: "Create" },
-    {
-        icon: (
-            <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>DP</AvatarFallback>
-            </Avatar>
-        ), text: "Profile"
-    },
-    { icon: <LogOut />, text: "Logout" },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthUser } from '@/redux/authSlice';
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
+    const { user } = useSelector(store => store.auth);
     const navigate = useNavigate();
     const logoutHandler = async () => {
         try {
             const res = await axios.get("http://localhost:5000/api/v1/user/logout", { withCredentials: true });
             if (res.data.success) {
+                dispatch(setAuthUser(null));
                 toast.success(res.data.message);
                 navigate("/login");
             }
@@ -41,6 +28,25 @@ const Sidebar = () => {
     const sidebarHandler = (item) => {
         if (item.text.toLowerCase() === "logout") logoutHandler();
     }
+
+    const sidebarItems = [
+        { icon: <Home />, text: "Home" },
+        { icon: <Search />, text: "Search" },
+        { icon: <TrendingUp />, text: "Explore" },
+        { icon: <MessageCircle />, text: "Messages" },
+        { icon: <Heart />, text: "Notifications" },
+        { icon: <PlusSquare />, text: "Create" },
+        {
+            icon: (
+                <Avatar>
+                    <AvatarImage src={user?.profilePhoto} alt="@shadcn" />
+                    <AvatarFallback>DP</AvatarFallback>
+                </Avatar>
+            ), text: "Profile"
+        },
+        { icon: <LogOut />, text: "Logout" },
+    ];
+
     return (
         <div className='fixed top-0 left-0 px-5 border-r border-gray-300 h-screen hidden sm:block sm:w-[24%] lg:w-[16%] z-10'>
             <div className='flex flex-col'>
