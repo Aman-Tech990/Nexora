@@ -15,11 +15,36 @@ import axios from 'axios';
 import { setPosts } from '@/redux/postSlice';
 
 const Post = ({ post }) => {
-    const [text, setText] = useState("");
-    const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
     const { posts } = useSelector(store => store.post);
+    const [text, setText] = useState("");
+    const [open, setOpen] = useState(false);
+    const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
+    const [postLike, setPostLike] = useState(post.likes.length);
     const dispatch = useDispatch();
+
+    const likeOrDislikeHandler = async () => {
+        try {
+            const action = liked ? "dislike" : "like";
+            const res = await axios.get(`http://localhost:5000/api/v1/post/${post?._id}/${action}`, { withCredentials: true });
+            if (res.data.success) {
+                const updatedLike = liked ? postLike - 1 : postLike + 1;
+                setPostLike(updatedLike);
+                setLiked(!liked);
+                const updatedPostData = posts.map(p => p._id === post._id
+                    ? {
+                        ...p, likes: liked ? p.likes.filter(id => id !== user._id) : [...p.likes, user._id]
+                    } : p
+                )
+                dispatch(setPosts(updatedPostData));
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(console.error());
+            toast.error(error.response.data.message);
+        }
+    }
+
 
     const deletePostHandler = async (e) => {
         try {
@@ -72,14 +97,16 @@ const Post = ({ post }) => {
             {/*  */}
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                    <FaRegHeart size={22} className='cursor-pointer' />
+                    {
+                        liked ? <FaHeart onClick={likeOrDislikeHandler} size={22} className='cursor-pointer text-red-600' /> : <FaRegHeart size={22} className='cursor-pointer' onClick={likeOrDislikeHandler} />
+                    }
                     <MessageCircle size={22} className='cursor-pointer' onClick={() => setOpen(true)} />
                     <Send size={22} className='cursor-pointer' />
                 </div>
                 <Bookmark />
             </div>
             <div>
-                <span className='font-medium mb-2 block'>1K Likes</span>
+                <span className='font-medium mb-2 block'>{postLike} likes</span>
                 <p>
                     <span className='font-medium mr-2 cursor-pointer'>{post.author.username}</span>
                     {post.caption || "."}
