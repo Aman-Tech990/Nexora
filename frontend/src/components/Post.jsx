@@ -25,10 +25,10 @@ const Post = ({ post }) => {
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
                     <Avatar>
-                        <AvatarImage src="" alt="post_image" />
+                        <AvatarImage src={post.author.profilePicture} alt="post_image" />
                         <AvatarFallback>DP</AvatarFallback>
                     </Avatar>
-                    <h1>Username</h1>
+                    <h1>{post.author.username}</h1>
                 </div>
                 <Dialog>
                     <DialogTrigger asChild>
@@ -59,7 +59,7 @@ const Post = ({ post }) => {
             <div>
                 <span className='font-medium mb-2 block'>1K Likes</span>
                 <p>
-                    <span className='font-medium mr-2 cursor-pointer'>username</span>
+                    <span className='font-medium mr-2 cursor-pointer'>{post.author.username}</span>
                     {post.caption || "."}
                 </p>
                 <span className='cursor-pointer text-sm text-gray-500' onClick={() => setOpen(true)}>View all 10 comments</span>
