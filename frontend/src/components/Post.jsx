@@ -9,7 +9,7 @@ import CommentDialog from './CommentDialog';
 import { Input } from './ui/input';
 import { useState } from 'react';
 
-const Post = () => {
+const Post = ({ post }) => {
     const [text, setText] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -43,7 +43,7 @@ const Post = () => {
             </div>
             {/* Post Image */}
             <img
-                src="/Nexora_01.avif"
+                src={post.image}
                 alt="person&laptop"
                 className="rounded-sm my-2 w-full aspect-square object-cover"
             />
@@ -60,7 +60,7 @@ const Post = () => {
                 <span className='font-medium mb-2 block'>1K Likes</span>
                 <p>
                     <span className='font-medium mr-2 cursor-pointer'>username</span>
-                    caption
+                    {post.caption || "."}
                 </p>
                 <span className='cursor-pointer text-sm text-gray-500' onClick={() => setOpen(true)}>View all 10 comments</span>
                 <CommentDialog open={open} setOpen={setOpen} />
