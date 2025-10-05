@@ -8,10 +8,32 @@ import { FaRegHeart } from "react-icons/fa";
 import CommentDialog from './CommentDialog';
 import { Input } from './ui/input';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import store from '@/redux/store';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { setPosts } from '@/redux/postSlice';
 
 const Post = ({ post }) => {
     const [text, setText] = useState("");
     const [open, setOpen] = useState(false);
+    const { user } = useSelector(store => store.auth);
+    const { posts } = useSelector(store => store.post);
+    const dispatch = useDispatch();
+
+    const deletePostHandler = async (e) => {
+        try {
+            const res = await axios.delete(`http://localhost:5000/api/v1/post/delete/${post._id}`, { withCredentials: true });
+            if (res.data.success) {
+                const updatedPostData = posts.filter((postItem) => postItem?._id != post?._id);
+                toast.success(res.data.message);
+                dispatch(setPosts(updatedPostData));
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.reponse.data.message);
+        }
+    }
 
     const changeEventHandler = (e) => {
         if (e.target.value.trim()) {
@@ -37,7 +59,7 @@ const Post = ({ post }) => {
                     <DialogContent className="flex flex-col items-center text-sm text-center">
                         <Button variant="outline" className="font-bold text-red-600 cursor-pointer w-fit">Unfollow</Button>
                         <Button variant="ghost" className="cursor-pointer w-fit">Add to Favorites</Button>
-                        <Button variant="ghost" className="cursor-pointer w-fit font-bold text-red-500">Delete</Button>
+                        <Button variant="ghost" className="cursor-pointer w-fit font-bold text-red-500" onClick={deletePostHandler}>Delete</Button>
                     </DialogContent>
                 </Dialog>
             </div>
