@@ -22,7 +22,7 @@ const CommentDialog = ({ open, setOpen }) => {
             <Dialog open={open}>
                 <DialogContent onInteractOutside={() => setOpen(false)} className="max-w-5xl p-0 flex flex-col">
                     <div className="flex flex-1">
-                        <div className="w-1/2">
+                        <div className="w-1/2"> 
                             <img
                                 src="/Nexora_01.avif"
                                 alt="post_image"
