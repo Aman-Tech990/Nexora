@@ -37,7 +37,7 @@ const Post = ({ post }) => {
             if (res.data.status) {
                 toast.success(res.data.message);
                 setText("");
-                const updatedCommentData = [...comment, res.data.message];
+                const updatedCommentData = [...comment, res.data.comment];
                 setComment(updatedCommentData);
                 const updatedPostData = posts.map(
                     p => p._id === post._id ? { ...p, comments: updatedCommentData } : p
