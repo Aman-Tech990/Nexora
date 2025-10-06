@@ -32,15 +32,16 @@ const Post = ({ post }) => {
                 },
                 withCredentials: true
             });
+            console.log(res.data);
             if (res.data.status) {
-                console.log(res.data.comment);
+                toast.success(res.data.message);
+                setText("");
                 const updatedCommentData = [...comment, res.data.message];
                 setComment(updatedCommentData);
                 const updatedPostData = posts.map(
                     p => p._id === post._id ? { ...p, comments: updatedCommentData } : p
                 );
                 dispatch(setPosts(updatedPostData));
-                toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
