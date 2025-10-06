@@ -26,13 +26,14 @@ const Post = ({ post }) => {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, text, {
+            const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, { text }, {
                 headers: {
-                    "Content-Type": "applucation/json"
+                    "Content-Type": "application/json"
                 },
                 withCredentials: true
             });
             if (res.data.status) {
+                console.log(res.data.comment);
                 const updatedCommentData = [...comment, res.data.comment];
                 setComment(updatedCommentData);
                 const updatedPostData = posts.map(
@@ -135,7 +136,7 @@ const Post = ({ post }) => {
                     <span className='font-medium mr-2 cursor-pointer'>{post.author.username}</span>
                     {post.caption || "."}
                 </p>
-                <span className='cursor-pointer text-sm text-gray-500' onClick={() => setOpen(true)}>View all 10 comments</span>
+                <span className='cursor-pointer text-sm text-gray-500' onClick={() => setOpen(true)}>View all {comment.length} comments</span>
                 <CommentDialog open={open} setOpen={setOpen} />
                 <div className='flex items-center justify-between mt-2'>
                     <input
@@ -143,6 +144,7 @@ const Post = ({ post }) => {
                         name="text"
                         value={text}
                         onChange={changeEventHandler}
+                        onClick={commentHandler}
                         placeholder="Add a comment..."
                         className="outline-none text-sm w-full"
                     />
