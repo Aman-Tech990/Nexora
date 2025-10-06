@@ -4,9 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Link } from 'react-router';
 import { MoreHorizontal } from 'lucide-react';
 import { Button } from './ui/button';
+import { useSelector } from 'react-redux';
+import Comment from './Comment';
+import store from '@/redux/store';
 
 const CommentDialog = ({ open, setOpen }) => {
-
+    const { selectedPost } = useSelector(store => store.post);
     const [text, setText] = useState("");
 
     const changeEventHandler = (e) => {
@@ -22,9 +25,9 @@ const CommentDialog = ({ open, setOpen }) => {
             <Dialog open={open}>
                 <DialogContent onInteractOutside={() => setOpen(false)} className="max-w-5xl p-0 flex flex-col">
                     <div className="flex flex-1">
-                        <div className="w-1/2"> 
+                        <div className="w-1/2">
                             <img
-                                src="/Nexora_01.avif"
+                                src={selectedPost?.image}
                                 alt="post_image"
                                 className="rounded-l-lg w-full h-full object-cover"
                             />
@@ -35,13 +38,13 @@ const CommentDialog = ({ open, setOpen }) => {
                                 <div className="flex items-center gap-1">
                                     <Link>
                                         <Avatar>
-                                            <AvatarImage src="" alt="profile_picture" />
+                                            <AvatarImage src={selectedPost?.author?.profilePhoto} alt="profile_picture" />
                                             <AvatarFallback>DP</AvatarFallback>
                                         </Avatar>
                                     </Link>
                                     <Link>
                                         <span className="font-semibold text-sm">
-                                            username
+                                            {selectedPost?.author?.username}
                                         </span>
                                     </Link>
                                 </div>
@@ -64,7 +67,9 @@ const CommentDialog = ({ open, setOpen }) => {
                             </div>
                             <hr />
                             <div className='flex-1 items-center overflow-y-auto max-h-96 p-4'>
-                                All Comments to be shown
+                                {
+                                    selectedPost?.comments.map((comment) => <Comment key={comment._id} comment={comment} />)
+                                }
                             </div>
                             <div className="p-4 flex items-center gap-2">
                                 <input

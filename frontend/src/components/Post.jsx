@@ -121,7 +121,6 @@ const Post = ({ post }) => {
                 alt="person&laptop"
                 className="rounded-sm my-2 w-full aspect-square object-cover"
             />
-            {/*  */}
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
                     {
