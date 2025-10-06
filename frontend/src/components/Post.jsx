@@ -21,7 +21,31 @@ const Post = ({ post }) => {
     const [open, setOpen] = useState(false);
     const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
     const [postLike, setPostLike] = useState(post.likes.length);
+    const [comment, setComment] = useState(post.comments);
     const dispatch = useDispatch();
+
+    const commentHandler = async () => {
+        try {
+            const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, text, {
+                headers: {
+                    "Content-Type": "applucation/json"
+                },
+                withCredentials: true
+            });
+            if (res.data.status) {
+                const updatedCommentData = [...comment, res.data.comment];
+                setComment(updatedCommentData);
+                const updatedPostData = posts.map(
+                    p => p._id === post._id ? { ...p, comments: updatedCommentData } : p
+                );
+                dispatch(setPosts(updatedPostData));
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.reponse.data.message);
+        }
+    }
 
     const likeOrDislikeHandler = async () => {
         try {
