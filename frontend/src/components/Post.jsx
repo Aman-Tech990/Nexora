@@ -141,7 +141,10 @@ const Post = ({ post }) => {
                     <span className='font-medium mr-2 cursor-pointer'>{post.author.username}</span>
                     {post.caption || "."}
                 </p>
-                <span className='cursor-pointer text-sm text-gray-500' onClick={() => setOpen(true)}>View all {comment.length} comments</span>
+                <span className='cursor-pointer text-sm text-gray-500' onClick={() => {
+                    dispatch(setSelectedPost(post));
+                    setOpen(true)
+                }}>View all {comment.length} comments</span>
                 <CommentDialog open={open} setOpen={setOpen} />
                 <div className='flex items-center justify-between mt-2'>
                     <input
