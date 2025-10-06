@@ -13,6 +13,7 @@ import store from '@/redux/store';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { setPosts } from '@/redux/postSlice';
+import { setSelectedPost } from "@/redux/postSlice";
 
 const Post = ({ post }) => {
     const { user } = useSelector(store => store.auth);
@@ -126,7 +127,10 @@ const Post = ({ post }) => {
                     {
                         liked ? <FaHeart onClick={likeOrDislikeHandler} size={22} className='cursor-pointer text-red-600' /> : <FaRegHeart size={22} className='cursor-pointer' onClick={likeOrDislikeHandler} />
                     }
-                    <MessageCircle size={22} className='cursor-pointer' onClick={() => setOpen(true)} />
+                    <MessageCircle size={22} className='cursor-pointer' onClick={() => {
+                        dispatch(setSelectedPost(post));
+                        setOpen(true);
+                    }} />
                     <Send size={22} className='cursor-pointer' />
                 </div>
                 <Bookmark />
