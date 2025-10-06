@@ -34,7 +34,7 @@ const Post = ({ post }) => {
             });
             if (res.data.status) {
                 console.log(res.data.comment);
-                const updatedCommentData = [...comment, res.data.comment];
+                const updatedCommentData = [...comment, res.data.message];
                 setComment(updatedCommentData);
                 const updatedPostData = posts.map(
                     p => p._id === post._id ? { ...p, comments: updatedCommentData } : p

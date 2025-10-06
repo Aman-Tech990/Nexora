@@ -211,7 +211,7 @@ export const getCommentsForPost = async (req, res) => {
     try {
         const postId = req.params.id;
         const comments = await Comment.find({ post: postId })
-            .populate({ path: "author", select: "username, profilePicture" });
+            .populate({ path: "author", select: "username profilePicture" });
         if (!comments) {
             return res.status(404).json({
                 success: false,
