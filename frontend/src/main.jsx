@@ -5,8 +5,8 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import { PersistGate } from "redux-persist/integration/react";
-import { Toaster } from './components/ui/sonner'
-import { persistStore } from 'redux-persist'
+import { Toaster } from "sonner";
+import { persistStore } from 'redux-persist';
 
 let persistor = persistStore(store)
 
