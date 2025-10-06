@@ -144,12 +144,11 @@ const Post = ({ post }) => {
                         name="text"
                         value={text}
                         onChange={changeEventHandler}
-                        onClick={commentHandler}
                         placeholder="Add a comment..."
                         className="outline-none text-sm w-full"
                     />
                     {
-                        text && <span className='text-[#3BADF8] font-semibold cursor-pointer'>Post</span>
+                        text && <span onClick={commentHandler} className='text-[#3BADF8] font-semibold cursor-pointer'>Post</span>
                     }
                 </div>
             </div>
