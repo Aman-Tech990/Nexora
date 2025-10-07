@@ -15,7 +15,7 @@ import { setPosts } from '@/redux/postSlice';
 const CommentDialog = ({ open, setOpen }) => {
     const { selectedPost } = useSelector(store => store.post);
     const [text, setText] = useState("");
-    const [comment, setComment] = useState([]);
+    const [comment, setComment] = useState(selectedPost?.comments);
 
     const changeEventHandler = (e) => {
         if (e.target.value.trim()) {
