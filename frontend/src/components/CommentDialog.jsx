@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Link } from 'react-router';
@@ -15,7 +15,7 @@ import { setPosts } from '@/redux/postSlice';
 const CommentDialog = ({ open, setOpen }) => {
     const { selectedPost } = useSelector(store => store.post);
     const [text, setText] = useState("");
-    const [comment, setComment] = useState(selectedPost?.comments);
+    const [comment, setComment] = useState([]);
 
     const changeEventHandler = (e) => {
         if (e.target.value.trim()) {
@@ -47,6 +47,12 @@ const CommentDialog = ({ open, setOpen }) => {
             toast.error(error.response.data.message);
         }
     }
+
+    useEffect(() => {
+        if (selectedPost) {
+            setComment(selectedPost?.comments);
+        }
+    }, [selectedPost]);
 
     return (
         <div>
