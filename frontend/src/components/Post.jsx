@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { setPosts } from '@/redux/postSlice';
 import { setSelectedPost } from "@/redux/postSlice";
+import { Badge } from './ui/badge';
 
 const Post = ({ post }) => {
     const { user } = useSelector(store => store.auth);
@@ -26,6 +27,7 @@ const Post = ({ post }) => {
     const dispatch = useDispatch();
 
     const commentHandler = async () => {
+        if (!text.trim()) return;
         try {
             const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, { text }, {
                 headers: {
@@ -77,22 +79,18 @@ const Post = ({ post }) => {
         try {
             const res = await axios.delete(`http://localhost:5000/api/v1/post/delete/${post._id}`, { withCredentials: true });
             if (res.data.success) {
-                const updatedPostData = posts.filter((postItem) => postItem?._id != post?._id);
+                const updatedPostData = posts.filter((postItem) => postItem?._id !== post?._id);
                 toast.success(res.data.message);
                 dispatch(setPosts(updatedPostData));
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.reponse.data.message);
+            toast.error(error.response.data.message);
         }
     }
 
     const changeEventHandler = (e) => {
-        if (e.target.value.trim()) {
-            setText(e.target.value);
-        } else {
-            setText("");
-        }
+        setText(e.target.value);
     }
     return (
         <div className="my-8 w-full max-w-sm mx-auto">
@@ -102,7 +100,12 @@ const Post = ({ post }) => {
                         <AvatarImage src={post.author.profilePicture} alt="post_image" />
                         <AvatarFallback>DP</AvatarFallback>
                     </Avatar>
-                    <h1>{post.author.username}</h1>
+                    <div className="flex items-center gap-2">
+                        <h1>{post.author.username}</h1>
+                        {
+                            user?._id?.toString() === post?.author?._id.toString() && <Badge>Author</Badge>
+                        }
+                    </div>
                 </div>
                 <Dialog>
                     <DialogTrigger asChild>
