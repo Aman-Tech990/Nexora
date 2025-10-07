@@ -9,10 +9,13 @@ import Comment from './Comment';
 import store from '@/redux/store';
 import axios from 'axios';
 import { toast } from 'sonner';
+import Posts from './Posts';
+import { setPosts } from '@/redux/postSlice';
 
 const CommentDialog = ({ open, setOpen }) => {
     const { selectedPost } = useSelector(store => store.post);
     const [text, setText] = useState("");
+    const [comment, setComment] = useState([]);
 
     const changeEventHandler = (e) => {
         if (e.target.value.trim()) {
@@ -32,6 +35,10 @@ const CommentDialog = ({ open, setOpen }) => {
             });
             console.log(res.data);
             if (res.data.status) {
+                const updatedCommentData = [...comment, res.data.comment];
+                setComment(updatedCommentData);
+                const updatedPostData = Posts.map(p => p._id === selectedPost._id ? { ...p, comments: updatedCommentData } : p);
+                setPosts(updatedPostData);
                 toast.success(res.data.message);
                 setText("");
             }
