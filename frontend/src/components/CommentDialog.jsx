@@ -7,6 +7,8 @@ import { Button } from './ui/button';
 import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import store from '@/redux/store';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 const CommentDialog = ({ open, setOpen }) => {
     const { selectedPost } = useSelector(store => store.post);
@@ -22,7 +24,7 @@ const CommentDialog = ({ open, setOpen }) => {
 
     const commentHandler = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, { text }, {
+            const res = await axios.post(`http://localhost:5000/api/v1/post/${selectedPost?._id}/comment`, { text }, {
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -32,12 +34,6 @@ const CommentDialog = ({ open, setOpen }) => {
             if (res.data.status) {
                 toast.success(res.data.message);
                 setText("");
-                const updatedCommentData = [...comment, res.data.comment];
-                setComment(updatedCommentData);
-                const updatedPostData = posts.map(
-                    p => p._id === post._id ? { ...p, comments: updatedCommentData } : p
-                );
-                dispatch(setPosts(updatedPostData));
             }
         } catch (error) {
             console.log(error);
