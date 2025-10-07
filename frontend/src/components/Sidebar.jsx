@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser } from '@/redux/authSlice';
 import CreatePost from './CreatePost';
 import { setSelectedPost } from '@/redux/postSlice';
+import { setPosts } from '@/redux/postSlice';
 
 const Sidebar = () => {
 

@@ -20,6 +20,31 @@ const CommentDialog = ({ open, setOpen }) => {
         }
     }
 
+    const commentHandler = async () => {
+        try {
+            const res = await axios.post(`http://localhost:5000/api/v1/post/${post?._id}/comment`, { text }, {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                withCredentials: true
+            });
+            console.log(res.data);
+            if (res.data.status) {
+                toast.success(res.data.message);
+                setText("");
+                const updatedCommentData = [...comment, res.data.comment];
+                setComment(updatedCommentData);
+                const updatedPostData = posts.map(
+                    p => p._id === post._id ? { ...p, comments: updatedCommentData } : p
+                );
+                dispatch(setPosts(updatedPostData));
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
+
     return (
         <div>
             <Dialog open={open}>
@@ -83,6 +108,7 @@ const CommentDialog = ({ open, setOpen }) => {
                                 <Button
                                     variant="outline"
                                     disabled={!text.trim()}
+                                    onClick={commentHandler}
                                     className="cursor-pointer"
                                 >
                                     Send
