@@ -71,7 +71,7 @@ const Post = ({ post }) => {
                         ? {
                             ...p,
                             likes: liked
-                                ? p.likes.filter(id => id !== user._id)
+                                ? p.likes.filter(id => id !== user.id)
                                 : [...p.likes, user._id],
                         }
                         : p
@@ -119,8 +119,8 @@ const Post = ({ post }) => {
                     <div className="flex items-center gap-2">
                         <h1>{post.author.username}</h1>
                         {
-                            user?._id?.toString() === post?.author?._id?.toString() &&
-                            <Badge>Author</Badge>
+                            user?.id?.toString() === post?.author?._id?.toString() &&
+                            <Badge variant="secondary">Author</Badge>
                         }
                     </div>
                 </div>
