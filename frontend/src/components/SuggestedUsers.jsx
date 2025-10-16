@@ -2,7 +2,11 @@ import React from 'react'
 
 const SuggestedUsers = () => {
     return (
-        <div>SuggestedUsers</div>
+        <div className="my-10">
+            <div>
+                
+            </div>
+        </div>
     )
 }
 
