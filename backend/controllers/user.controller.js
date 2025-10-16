@@ -101,10 +101,12 @@ export const login = async (req, res) => {
 
 export const logout = async (_, res) => {
     try {
-        return res.cookie("token", "", { maxAge: 0 }).json({
-            success: true,
-            message: "User logged out successfully!"
-        });
+        return res
+            .cookie("token", "", { maxAge: 0 })
+            .json({
+                success: true,
+                message: "User logged out successfully!"
+            });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
